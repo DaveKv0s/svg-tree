@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>Tree Diagram</title>
+        <style>
+            html,body,h1,h2,h3,h4,h5,h6 {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+            }
+            
+
+            .p1 {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            p.top {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                background-color: forestgreen;
+                font-size: 40px;
+                color: white;
+                border: 3px solid black;
+                border-radius: 8px;
+                padding: 5px; 
+            }
+
+            /* Add a black background color to the top navigation */
+            .topnav {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                background-color: rgb(100, 127, 95);
+                font-size: 40px;
+           
+            overflow: hidden;
+            }
+
+            /* Style the links inside the navigation bar */
+            .topnav a {
+            float: left;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            }
+
+            /* Change the color of links on hover */
+            .topnav a:hover {
+            background-color: rgb(102, 98, 98);
+            color: white;
+            }
+
+            /* Add a color to the active/current link */
+            .topnav a.active {
+            background-color: #286509;
+            color: white;
+            }
+
+            .grid-container {
+                display: grid;
+                grid-template-columns: auto auto;
+                border: 2px solid rgba(0, 0, 0, 0.8);
+                /* background-color: #2196F3; */
+                padding: 10px;
+            }
+            .grid-item {
+                /* background-color: rgba(255, 255, 255, 0.8);*/
+                padding: 20px;
+                font-size: 50px;
+                text-align: left; 
+            }
+            p {
+                font-size: 1.5em;
+            }
+            input {
+                width: 100%;
+            }
+
+            .slidecontainer {
+                width: 100%; /* Width of the outside container */
+            }   
+
+            /* The slider itself */
+            
+            .slider {
+                width: 100%;
+                height: 15px;
+                border-radius: 5px;  
+                background: #d3d3d3;
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+                }
+            
+
+            
+            /* Mouse-over effects */
+            .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+            }
+
+            .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%; 
+            background: forestgreen;
+            cursor: pointer;
+            }
+
+            .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: forestgreen;
+            cursor: pointer;
+            }
+        </style> 
+    </header>
+
+    <script type="text/ecmascript">
+        let svgDoc;
+               
+        let plot = {
+            scground:790,
+            scxlocation:400,
+            cxwidth:800,
+            cywidth:800,
+            crshapex:75,
+            crshapey:75,
+            treetopx:500,
+            treetopy:10};
+        
+        let tree = {
+            units:"cm",
+            maxht:3000,
+            height:2000,
+            dbh:25,
+            clength:250,
+            cradius:250,
+            dcb:180,
+            cbht:1200,
+            bh:130};   
+    
+        function init(evt) {
+            if ( window.svgDocument == null ) {
+                svgDoc = evt.target.ownerDocument;
+            }  
+           
+            units = svgDoc.getElementById('units');
+            height = svgDoc.getElementById('height');
+          
+            
+        };
+        
+        function selectElement(evt, point){
+            selectedPoint = point;
+            control_point = evt.target.parentNode;
+            dx = coords[selectedPoint*2] - evt.clientX;
+                            
+            example_shape.setAttributeNS(null, "d", d);
+            control_point.setAttributeNS(null, "transform", "translate(" + x + "," + y + ")");
+            text_variables[selectedPoint-1].firstChild.data = x + "," + y;
+            
+            // Control lines
+            var n = Math.floor(selectedPoint/3);
+            var i = (selectedPoint % 2) + 1;
+            controls_lines[n].setAttributeNS(null, "x"+i, x);
+            controls_lines[n].setAttributeNS(null, "y"+i, y);
+
+        };
+        
+        function getInputValue() {
+            // Selecting the input element and get its value 
+            let htVal = document.getElementById("ht").value;
+            // Displaying the value
+            console.log(units);
+            console.log(height);
+            console.log(htVal);
+            
+        };
+        
+        function sliderChange(val) {
+            document.getElementById('output').innerHTML = val;
+            document.getElementById("height").setAttribute("cy", val);
+        }
+        document.getElementById('slider').value = 50;
+
+        function scale(){}
+        
+        </script>
+        
+
+    <body>
+        <div class="topnav">
+            <a class="active" href="#home">Home</a>
+            <a href="svg-tree-about.html">About</a>
+        </div>
+
+        <div class="grid-container">
+    
+            <svg  width="800" height="800">
+                <g transform="scale(1,-1) translate(0,-800) ">
+                    <rect width="800" height="800" style="fill:transparent;stroke:black;stroke-width:3;fill-opacity:0;stroke-opacity:1" />
+                    <!-- Oak shape 
+                    <path d="M 500 10 Q 650 100, 500 350" stroke="black" stroke-width="3" fill="forestgreen"/>
+                    <path d="M 500 10 Q 350 100, 500 350" stroke="black" stroke-width="3" fill="forestgreen"/>
+                       Pine shape 
+                    <path d="M 500 10 Q 650 300, 500 350" stroke="black" stroke-width="3" fill="forestgreen"/>
+                    <path d="M 500 10 Q 350 300, 500 350" stroke="black" stroke-width="3" fill="forestgreen"/>
+                    -->
+                    <!-- Ground Line -->
+                    <line x1="10" y1="10" x2="790" y2="10" style="stroke:rgb(168, 150, 133);stroke-width:8" >
+                        <title>Ground</title>
+                    </line>
+                    
+                    <!--Stem in crown 
+                    <path d="M 505 350 L 500 10 L 495 350 Z" style="stroke:rgb(84, 50, 0);stroke-width:2; fill:rgb(84, 50, 0)"/>
+                    -->
+                    <!--Stem below crown 
+                    <path d="M 495 350 L 505 350 L 508 790 L 492 790 Z" style="stroke:rgb(84, 50, 0);stroke-width:2;fill:rgb(84,50,0)"/>
+                    -->
+                    <!-- centerline -->
+                    <line x1="400" y1="10" x2="400" y2="790" style="stroke:rgb(181, 181, 181);stroke-width:2" />             
+                    
+                    <!-- DBH disk 
+                    <ellipse cx="400" cy="20" rx="10" ry="4"  style="fill:rgb(242, 141, 141);stroke-width:2" >
+                        <title>Diameter at breast height</title>
+                    </ellipse>
+                    -->
+
+                    <!-- Crown Base disk 
+                    <ellipse cx="400" cy="432" rx="7" ry="4"  style="fill:rgb(242, 141, 141);stroke-width:2" >
+                        <title>Diameter at crownbase</title>
+                    </ellipse>
+                    -->
+                    
+                    <!-- Control points -->
+                    <!-- Tree top --> 
+                    <circle id="height" cx="400" cy="790" r="6" stroke="black" stroke-width="2" fill="red" >
+                        <title>Height</title>
+                    </circle>
+                    
+                    <!-- Crownbase 
+                    <circle id="base" cx="400" cy="440" r="6" stroke="black" stroke-width="2" fill="red" >
+                        <title>Crown base</title>
+                    </circle>
+                    -->
+                </g>
+            </svg>
+       
+
+        <div>
+            <h1>Tree Values</h1>
+            <p> All value are in centimeters</p>
+            <div class="slidecontainer">
+                <p>Height: <span id="output"></span></p>
+                <!--<input type="range" min="1" max="3500" value="2000" class="slider" id="htslider" oninput="moveSlider(this)" > -->
+                <!--<input type="range" min="1" max="3500" value="2000" oninput="moveSlider(this, 'y', value)"/> -->
+                <input id="height" type="range" min="1" max="3500" step="1" oninput="sliderChange(this.value)">
+            </div>
+            <!--<div class="slidecontainer">
+                <p>Crown Height: <span id="crheight"></span></p>
+                <input type="range" min="1" max="3500" value="1500" class="slider" id="crhtRange">
+            </div>
+            <div class="slidecontainer">
+                <p>Crown Radius: <span id="crradius"></span></p>
+                <input type="range" min="1" max="400" value="350" class="slider" id="crradRange">
+            </div>
+            <div class="slidecontainer">
+                <p>Crown Radius Height: <span id="crradiusht"></span></p>
+                <input type="range" min="1" max="400" value="350" class="slider" id="crradRange">
+            </div>
+            <div class="slidecontainer">
+                <p>Diameter at Crown Height: <span id="dchradius"></span></p>
+                <input type="range" min="1" max="70" value="35" class="slider" id="dchRange">
+            </div>
+            <div class="slidecontainer">
+                <p>Diameter at Breast Height: <span id="dbhradius"></span></p>
+                <input type="range" min="1" max="70" value="35" class="slider" id="dbhRange">
+            </div> -->
+        </div>
+    </div>
+
+        <script>
+            // Height slider
+            var htslider = document.getElementById("htslider");
+            var htoutput = document.getElementById("height");
+            htoutput.innerHTML = htslider.value; // Display the default slider value
+            var htcoordy = document.getElementById("height");
+
+                        
+            // Crown Height slider
+            var crhtslider = document.getElementById("crhtRange");
+            var crhtoutput = document.getElementById("crheight");
+            crhtoutput.innerHTML = crhtslider.value; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            crhtslider.oninput = function() {
+                crhtoutput.innerHTML = this.value;
+                tree.cbht = parseInt(this.value);
+            }
+
+            // Crown Radius slider
+            var crradslider = document.getElementById("crradRange");
+            var crradoutput = document.getElementById("crradius");
+            crradoutput.innerHTML = crradslider.value; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            crradslider.oninput = function() {
+                crradoutput.innerHTML = this.value;
+                tree.cradius = parseInt(this.value);
+            }
+
+            // Diameter at Crown Height slider
+            var dchslider = document.getElementById("dchRange");
+            var dchoutput = document.getElementById("dchradius");
+            dchoutput.innerHTML = dchslider.value; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            dchslider.oninput = function() {
+                dchoutput.innerHTML = this.value;
+                tree.dch = parseInt(this.value);
+            }
+            
+            // Diameter at Breast Height slider
+            var dbhslider = document.getElementById("dbhRange");
+            var dbhoutput = document.getElementById("dbhradius");
+            dbhoutput.innerHTML = dbhslider.value; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            dbhslider.oninput = function() {
+                dbhoutput.innerHTML = this.value;
+                tree.dbh = parseInt(this.value);
+            }
+
+
+        </script>
+    
+    </body>
+</html>

@@ -1,2 +1,4 @@
 # svg-tree
-A program to to draw trees using html and svg
+svg-tree
+
+See file tree-Diagram.png for a example output.
